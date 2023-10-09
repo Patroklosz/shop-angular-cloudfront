@@ -27,7 +27,7 @@ import { NotificationService } from '../../core/notification.service';
 })
 export class EditProductComponent implements OnInit, OnDestroy {
   form: UntypedFormGroup;
-  productId: string | null = null;
+  productId: number | null = null;
   requestInProgress = false;
 
   loaded$ = new BehaviorSubject(false);
@@ -74,7 +74,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
     }
 
     this.productsService
-      .getProductById(productId)
+      .getProductById(Number(productId))
       .pipe(
         finalize(() => this.loaded$.next(true)),
         takeUntil(this.onDestroy$)

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { CheckoutService } from './checkout.service';
 import { ProductCheckout } from '../products/product.interface';
@@ -75,11 +79,11 @@ export class CartComponent implements OnInit {
     this.cartEmpty$ = this.totalInCart$.pipe(map((count) => count > 0));
   }
 
-  add(id: string): void {
+  add(id: number): void {
     this.cartService.addItem(id);
   }
 
-  remove(id: string): void {
+  remove(id: number): void {
     this.cartService.removeItem(id);
   }
 }
