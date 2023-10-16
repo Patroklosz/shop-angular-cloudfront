@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Product } from './product.interface';
@@ -23,7 +23,7 @@ export class ProductsService extends ApiService {
     return this.http.post<Product>(url, product);
   }
 
-  editProduct(id: string, changedProduct: Product): Observable<Product> {
+  editProduct(id: number, changedProduct: Product): Observable<Product> {
     if (!this.endpointEnabled('bff')) {
       console.warn(
         'Endpoint "bff" is disabled. To enable change your environment.ts config'
@@ -35,7 +35,7 @@ export class ProductsService extends ApiService {
     return this.http.put<Product>(url, changedProduct);
   }
 
-  getProductById(id: string): Observable<Product | null> {
+  getProductById(id: number): Observable<Product | null> {
     if (!this.endpointEnabled('bff')) {
       console.warn(
         'Endpoint "bff" is disabled. To enable change your environment.ts config'
@@ -51,8 +51,8 @@ export class ProductsService extends ApiService {
 
     const url = this.getUrl('bff', `products/${id}`);
     return this.http
-      .get<{ product: Product }>(url)
-      .pipe(map((resp) => resp.product));
+      .get<Omit<Product, 'count'>>(url)
+      .pipe(map((resp) => ({ ...resp, count: 5 })));
   }
 
   getProducts(): Observable<Product[]> {
@@ -64,7 +64,12 @@ export class ProductsService extends ApiService {
     }
 
     const url = this.getUrl('bff', 'products');
-    return this.http.get<Product[]>(url);
+    return this.http.get<{ books: Product[] }>(url).pipe(
+      map((res) => {
+        const books = res.books;
+        return books.map((book) => ({ ...book, count: 5 }));
+      })
+    );
   }
 
   getProductsForCheckout(ids: string[]): Observable<Product[]> {
@@ -73,7 +78,9 @@ export class ProductsService extends ApiService {
     }
 
     return this.getProducts().pipe(
-      map((products) => products.filter((product) => ids.includes(product.id)))
+      map((products) =>
+        products.filter((product) => ids.includes(product.id.toString()))
+      )
     );
   }
 }
