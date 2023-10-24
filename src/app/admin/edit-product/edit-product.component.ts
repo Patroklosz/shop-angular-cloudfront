@@ -42,7 +42,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
     private readonly router: Router
   ) {
     this.form = this.fb.group({
-      title: ['', Validators.required],
+      name: ['', Validators.required],
       description: ['', Validators.required],
       price: ['', Validators.required],
       count: ['', Validators.required],
@@ -62,7 +62,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
   }
 
   get titleCtrl(): AbstractControl {
-    return this.form.get('title') as AbstractControl;
+    return this.form.get('name') as AbstractControl;
   }
 
   ngOnInit(): void {

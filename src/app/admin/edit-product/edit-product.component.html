@@ -7,12 +7,12 @@
     <form class="row" [formGroup]="form">
       <div class="col-12">
         <mat-form-field class="w-100">
-          <mat-label>Title</mat-label>
-          <input matInput formControlName="title" />
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
           <mat-error
             *ngIf="titleCtrl.touched && titleCtrl.hasError('required')"
           >
-            Product title is required
+            Product name is required
           </mat-error>
         </mat-form-field>
       </div>
