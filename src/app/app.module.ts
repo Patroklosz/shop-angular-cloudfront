@@ -1,4 +1,4 @@
-import { NgModule, Provider } from '@angular/core';
+import { APP_INITIALIZER, NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -49,6 +49,13 @@ const interceptors: Provider[] = [
     {
       provide: CONFIG_TOKEN,
       useValue: environment,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => {
+        const token = window.btoa('Patroklosz:TEST_PASSWORD');
+        localStorage.setItem('authToken', `Basic ${token}`);
+      },
     },
   ],
   bootstrap: [AppComponent],
